@@ -1,0 +1,30 @@
+version: "3"
+services:
+    application:
+        build: https://github.com/maxdoom-com/docker-compose-php8.2.git
+        env_file: .env
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - ./html/:/srv/index/
+            - ./home/:/home/you/
+            - ./etc/custom/php.ini:/etc/php82/conf.d/custom-php.ini
+            - ./etc/custom/apache.conf:/etc/apache2/conf.d/custom-apache.conf
+            - ./etc/apache2/conf.d/vhosts.d:/etc/apache2/conf.d/vhosts.d
+    database:
+        build: https://github.com/maxdoom-com/docker-compose-mysql10.5.git
+        env_file: .env
+        ports:
+            - "3306:3306"
+        volumes:
+            - ./mysql:/var/lib/mysql
+            - ./etc/custom/mariadb.conf:/etc/my.cnf.d/custom-mariadb.conf
+    mailcatcher:
+        build: https://github.com/maxdoom-com/docker-compose-mailcatcher.git
+        env_file: .env
+        ports:
+            - "8080:8080"
+            - "25:25"
+        volumes:
+            - ./mails/:/srv/mails/
